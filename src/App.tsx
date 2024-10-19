@@ -7,7 +7,7 @@ import { Book } from './pages/post-login/book/Book.tsx';
 import {Dashboard} from "./pages/post-login/dashboard/Dashboard.tsx";
 import { Order } from './pages/post-login/order/Order.tsx';
 import {User} from "./pages/post-login/user/User.tsx";
-import {Header} from "./component/header/Header.tsx";
+
 
 
 
@@ -24,7 +24,6 @@ const App:React.FC=()=> {
         ])
   return (
     <>
-        <Header/>
         <RouterProvider router={route} />
     </>
   )
