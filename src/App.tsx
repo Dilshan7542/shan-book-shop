@@ -1,5 +1,5 @@
 import { RouterProvider,createBrowserRouter } from 'react-router-dom';
-import './App.css'
+import './App.scss'
 import React from "react";
 import {PostLogin} from "./pages/post-login/PostLogin.tsx";
 import {PreLogin} from "./pages/pre-login/PreLogin.tsx";
