@@ -18,6 +18,7 @@ const App:React.FC=()=> {
                     {path:"book",element:<Book/>},
                     {path:"order",element:<Order/>},
                     {path:"user",element:<User/>},
+            
                 ]},
             {path:"/pre",element:<PreLogin/>},
 
