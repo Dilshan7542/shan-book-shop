@@ -7,6 +7,7 @@ import { Book } from './pages/post-login/book/Book.tsx';
 import {Dashboard} from "./pages/post-login/dashboard/Dashboard.tsx";
 import { Order } from './pages/post-login/order/Order.tsx';
 import {User} from "./pages/post-login/user/User.tsx";
+import {Student} from "./pages/post-login/student/Student.tsx";
 
 
 
@@ -18,7 +19,8 @@ const App:React.FC=()=> {
                     {path:"book",element:<Book/>},
                     {path:"order",element:<Order/>},
                     {path:"user",element:<User/>},
-            
+                    {path:"student",element:<Student/>},
+
                 ]},
             {path:"/pre",element:<PreLogin/>},
 

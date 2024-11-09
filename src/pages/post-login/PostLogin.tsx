@@ -16,13 +16,18 @@ interface SlideMenu {
 }
 
 export const PostLogin = () => {
-    const [message, setMessage] = useState('')
-    const [togggleMunu, setTogggleMunu] = useState(true)
+    const [message, setMessage] = useState('');
+    const [togggleMunu, setTogggleMunu] = useState(true);
     const navList: SlideMenu[] = [
         {
             name: "Dashboard",
             icon: "ph ph-gauge",
             list: [{name: "go to Dashboard", link: "/", description: "Dashboard"},]
+        },
+        {
+            name: "Student", icon: "ph ph-person", list: [
+                {name: "Add Student", link: "student", description: "Manage Student"},
+            ]
         },
         {
             name: "Order", icon: "ph ph-currency-circle-dollar", list: [
@@ -35,6 +40,11 @@ export const PostLogin = () => {
                 {name: "Add Book", link: "book", description: "Manage Book"}
             ]
         },
+        {
+            name: "User", icon: "ph ph-user-circle", list: [
+                {name: "Add User", link: "user", description: "Manage User"}
+            ]
+        },
     ];
     const handleClick = (des: string) => {
         setMessage(des);
@@ -45,8 +55,8 @@ export const PostLogin = () => {
     return (<>
         <Header message={message}/>
         <main className="" style={{'height': "92vh"}}>
-            <section className="w-100 d-flex justify-content-between h-100">
-                <section className="h-100 w-15 overflow-y-scroll"
+            <section className="w-100 d-flex justify-content-between h-100 ">
+                <section className="h-100 w-15 overflow-y-scroll min-w-300px"
                          style={{height: '50px', display: togggleMunu ? "block" : "none"}}>
                     <section className={'h-5 d-flex justify-content-end align-items-center'}>
                         <button className={'btn btn-dark'} onClick={handleToggleMenu}>Back</button>
@@ -88,7 +98,7 @@ export const PostLogin = () => {
                         </section>
                     </section>
                 </section>
-                <section className="">
+                <section className=" bg-app-primary w-95">
                     <Outlet/>
                 </section>
             </section>

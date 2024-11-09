@@ -13,7 +13,7 @@ stateBuilder
     .addCase(userAction.userInit,state=>state)
     .addCase(userAction.userLogin,(_state,action)=>action.payload)
     .addCase(userAction.userLogout,()=> init)
-    .addCase(userAction.userSave,(_state, _action)=> _action.payload);
+    .addCase(userAction.userSave,(_state, action)=> action.payload);
 
 
 });
