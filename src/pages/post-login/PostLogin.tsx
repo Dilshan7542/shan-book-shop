@@ -22,10 +22,14 @@ export const PostLogin = () => {
         {
             name: "Dashboard",
             icon: "ph ph-gauge",
+            description: "Dashboard",
             list: [{name: "go to Dashboard", link: "/", description: "Dashboard"},]
         },
         {
-            name: "Student", icon: "ph ph-person", list: [
+            name: "Student", icon: "ph ph-person",
+            description: "Manage Student",
+            link: "student",
+            list: [
                 {name: "Add Student", link: "student", description: "Manage Student"},
             ]
         },
@@ -65,30 +69,34 @@ export const PostLogin = () => {
                         <section className="w-95">
                             <section className="accordion accordion-flush" id="main-side-nav-list">
                                 {navList.map((slide, index) => (
-                                    <section className="accordion-item" key={index}>
+                                    <section className="accordion-item" key={index} onClick={()=>handleClick(slide.description ? slide.description:slide.list[0].description)}>
                                         <h2 className="accordion-header" id={slide.name + index}>
-                                            <button className=" accordion-button collapsed p-2" type="button"
+                                            <Link
+                                                to={slide.link ? slide.link:slide.list[0].link} >
+                                            <button className=" accordion-button collapsed p-2 fw-bold" type="button"
                                                     data-bs-toggle="collapse"
                                                     data-bs-target={"#" + slide.name + index + 1}
                                                     aria-expanded="false" aria-controls={slide.name + index + 1}>
-                                                {slide.link && <div className="p-3"><Link
-                                                    to={slide.link}>{slide.name}</Link>
+                                             {/*   {slide.link && <div className="">{slide.name}
                                                 </div>}
                                                 {!slide.link && (<div className='d-flex align-items-center gap-1'><i
                                                     className={slide.icon + ' fw-bold'}></i>
                                                     <div className="fw-bold">{slide.name}</div>
-                                                </div>)}
+                                                </div>)}*/}
+                                                {slide.name}
                                             </button>
+                                            </Link>
                                         </h2>
                                         <div id={slide.name + index + 1} className="accordion-collapse collapse"
                                              aria-labelledby={slide.name + index} data-bs-parent="#main-side-nav-list">
                                             <div className="accordion-body pt-1 ps-0 pe-0">
                                                 <section className={'d-flex flex-column gap-1'}>
                                                     {slide.list.map((subSlide, index2) => (
-                                                        <button key={index2} className="w-100 btn btn-light"
+                                                        <Link to={subSlide.link} key={index2}>
+                                                        <button  className="w-100 btn btn-light"
                                                                 onClick={() => {
                                                                     handleClick(subSlide.description)
-                                                                }}><Link to={subSlide.link}>{subSlide.name}</Link></button>))}
+                                                                }}>{subSlide.name}</button></Link>))}
                                                 </section>
                                             </div>
                                         </div>
