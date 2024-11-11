@@ -77,12 +77,6 @@ export const PostLogin = () => {
                                                     data-bs-toggle="collapse"
                                                     data-bs-target={"#" + slide.name + index + 1}
                                                     aria-expanded="false" aria-controls={slide.name + index + 1}>
-                                             {/*   {slide.link && <div className="">{slide.name}
-                                                </div>}
-                                                {!slide.link && (<div className='d-flex align-items-center gap-1'><i
-                                                    className={slide.icon + ' fw-bold'}></i>
-                                                    <div className="fw-bold">{slide.name}</div>
-                                                </div>)}*/}
                                                 {slide.name}
                                             </button>
                                             </Link>
