@@ -9,14 +9,9 @@ import {Paginator, PaginatorPageChangeEvent} from "primereact/paginator";
 import {DataTable} from "primereact/datatable";
 import {Button} from "primereact/button";
 import {Dropdown, DropdownChangeEvent} from "primereact/dropdown";
+import { IStudent} from "../../../service/student/StudentService.ts";
 
-export interface IStudent {
-    studentId?: string;
-    name: string;
-    address: string;
-    age: number;
-    phone: string;
-}
+
 interface SortStudent{
     name: string;
     code: string;
@@ -38,7 +33,6 @@ export const Student = () => {
 
 
     useEffect(() => {
-
         const students: IStudent[] = [
             {
                 name: 'Alice Johnson',

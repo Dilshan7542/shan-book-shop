@@ -1,9 +1,10 @@
 import {Dialog} from "primereact/dialog";
 import {FieldValues, useForm} from "react-hook-form";
-import {IStudent} from "../Student.tsx";
+
 import {z} from 'zod';
 import {zodResolver} from "@hookform/resolvers/zod";
 import {RegexService} from "../../../../utils/regex.service.ts";
+import {IStudent} from "../../../../service/student/StudentService.ts";
 
 
 interface DialogStudent {
