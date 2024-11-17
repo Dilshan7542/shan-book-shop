@@ -19,10 +19,11 @@ const schema = z.object({
        phone:z.string().regex(RegexService.PHONE,{message:"Invalid Mobile Number"})
 });
 export const AddStudentDialog = (dialog: DialogStudent) => {
-    const {register, handleSubmit, formState: {errors,isValid}} = useForm<IStudent>({resolver: zodResolver(schema),mode:"onBlur"});
+    const {register, handleSubmit, formState: {errors,isValid},reset} = useForm<IStudent>({resolver: zodResolver(schema),mode:"onBlur"});
     const formData = (data: FieldValues) => {
         dialog.studentHandler(data as IStudent);
         dialog.hideVisibility();
+        reset();
     }
 
     return (<>

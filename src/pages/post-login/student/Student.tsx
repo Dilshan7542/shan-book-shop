@@ -38,7 +38,7 @@ export const Student = () => {
 
 
     useEffect(() => {
-        console.log(studentList);
+
         const students: IStudent[] = [
             {
                 name: 'Alice Johnson',
