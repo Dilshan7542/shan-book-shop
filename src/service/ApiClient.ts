@@ -1,5 +1,9 @@
 import axios,{CanceledError} from "axios";
-
+export interface AppResponse<T>{
+    message:string;
+    status:string;
+    content:T
+}
  const apiClient = axios.create({
     baseURL:import.meta.env.VITE_BASE_URL,
 });

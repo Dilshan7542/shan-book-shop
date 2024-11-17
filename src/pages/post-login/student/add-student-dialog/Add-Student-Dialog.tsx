@@ -22,7 +22,7 @@ const schema = z.object({
 export const AddStudentDialog = (dialog: DialogStudent) => {
     const {register, handleSubmit, formState: {errors,isValid},reset} = useForm<IStudent>({resolver: zodResolver(schema),mode:"onBlur"});
     const formData = (data: FieldValues) => {
-        dialog.studentHandler(data as IStudent);
+     dialog.studentHandler(data as IStudent);
         dialog.hideVisibility();
         reset();
     }

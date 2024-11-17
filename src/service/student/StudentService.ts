@@ -1,4 +1,4 @@
-import apiClient from "../ApiClient.ts";
+import apiClient, {AppResponse} from "../ApiClient.ts";
 import {AxiosError} from "axios";
 export interface IStudent {
     studentId?: string;
@@ -7,12 +7,22 @@ export interface IStudent {
     age: number;
     phone: string;
 }
-const URL="post/student";
+const URL="/student";
 export const getAllStudent=async ()=>{
     try {
-        const response = await apiClient.get<IStudent[]>(URL);
+        const response = await apiClient.get<AppResponse<IStudent[]>>(URL);
         return response.data;
     }catch (error){
         throw (error as AxiosError).message;
     }
+}
+export const addStudent=async (student:IStudent)=>{
+    try {
+   const response = await apiClient.post<AppResponse<IStudent>>(URL,student);
+        console.log(response)
+   return response.data;
+    }catch (error){
+        throw (error as AxiosError).message;
+    }
+
 }

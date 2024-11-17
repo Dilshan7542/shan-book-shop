@@ -9,19 +9,29 @@ import {Paginator, PaginatorPageChangeEvent} from "primereact/paginator";
 import {DataTable} from "primereact/datatable";
 import {Button} from "primereact/button";
 import {Dropdown, DropdownChangeEvent} from "primereact/dropdown";
-import { IStudent} from "../../../service/student/StudentService.ts";
+import {addStudent, getAllStudent, IStudent} from "../../../service/student/StudentService.ts";
+import {ResponseCode} from "../../../service/ResponseCode.ts";
 
 
 interface SortStudent{
     name: string;
     code: string;
 }
+const sortList: SortStudent[] = [
+    {name: 'A-Z', code: 'A-Z'},
+    {name: 'name', code: 'name'},
+    {name: 'age', code: 'age'},
+    {name: 'address', code: 'address'},
+    {name: 'phone', code: 'phone'},
+    {name: 'Z-A', code: 'Z-A'},
+];
 
 export const Student = () => {
     const [visible, setVisible] = useState<boolean>(false);
     const hideVisibility = () => {
         setVisible(false);
     }
+    const [sort, setSort] = useState<SortStudent | null>(null);
     const [first, setFirst] = useState<number>(0);
     const [rows, setRows] = useState<number>(10);
     const [studentList, setStudentList] = useState<IStudent[]>([]);
@@ -30,73 +40,26 @@ export const Student = () => {
         setRows(event.rows);
         console.log(event)
     };
-
-
     useEffect(() => {
-        const students: IStudent[] = [
-            {
-                name: 'Alice Johnson',
-                address: '123 Maple Street, Springfield',
-                age: 25,
-                phone: '0751234567'
-            },
-            {
-                name: 'Bob Smith',
-                address: '234 Oak Avenue, Springfield',
-                age: 30,
-                phone: '0752345678'
-            },
-            {
-                name: 'Charlie Brown',
-                address: '345 Pine Lane, Springfield',
-                age: 22,
-                phone: '0753456789'
-            },
-            {
-                name: 'Daisy Miller',
-                address: '456 Elm Boulevard, Springfield',
-                age: 28,
-                phone: '0754567890'
-            },
-            {
-                name: 'Ethan Clark',
-                address: '567 Cedar Drive, Springfield',
-                age: 35,
-                phone: '0755678901'
-            },
-            {
-                name: 'Fiona Wong',
-                address: '678 Birch Street, Springfield',
-                age: 19,
-                phone: '0756789012'
-            },
-            {
-                name: 'George King',
-                address: '789 Willow Avenue, Springfield',
-                age: 27,
-                phone: '0757890123'
-            },
-            {
-                name: 'Hannah White',
-                address: '890 Cherry Road, Springfield',
-                age: 32,
-                phone: '0758901234'
-            },
-
-        ];
-        setStudentList(students);
+        loadAllStudent();
     }, []);
-    const [sort, setSort] = useState<SortStudent | null>(null);
-    const sortList: SortStudent[] = [
-        {name: 'A-Z', code: 'A-Z'},
-        {name: 'name', code: 'name'},
-        {name: 'age', code: 'age'},
-        {name: 'address', code: 'address'},
-        {name: 'phone', code: 'phone'},
-        {name: 'Z-A', code: 'Z-A'},
-    ];
+
     const studentHandler = (event: IStudent) => {
-        setStudentList([...studentList,event]);
+        addStudent(event).then(resp=>{
+            console.log(resp)
+            if (resp.status == ResponseCode.SUCCESS) {
+                loadAllStudent();
+            }
+        }).catch(error=>{
+            console.log(error);
+        });
+    }
+    const loadAllStudent=()=>{
+        getAllStudent().then(resp=>{
+            if (resp.status === ResponseCode.SUCCESS) {
+                setStudentList(resp.content);
+            }
+        });
     }
     const searchStudent=()=>{
         console.log(sort);
