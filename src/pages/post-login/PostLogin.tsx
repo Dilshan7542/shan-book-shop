@@ -3,6 +3,7 @@ import {Header} from "../../component/header/Header.tsx";
 import {useState} from "react";
 // import { Dialog } from 'primereact/dialog';
 
+
 interface SlideMenu {
     name: string;
     link?: string;
@@ -17,6 +18,7 @@ interface SlideMenu {
 
 export const PostLogin = () => {
     const [message, setMessage] = useState('');
+
     const [togggleMunu, setTogggleMunu] = useState(true);
     const navList: SlideMenu[] = [
         {
@@ -54,6 +56,7 @@ export const PostLogin = () => {
         setMessage(des);
     }
     const handleToggleMenu = () => {
+
         setTogggleMunu(!togggleMunu);
     }
     return (<>

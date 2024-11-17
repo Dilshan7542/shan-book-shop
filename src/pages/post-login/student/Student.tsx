@@ -1,22 +1,26 @@
 import {PlusCircle} from "@phosphor-icons/react";
 
 
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {AddStudentDialog} from "./add-student-dialog/Add-Student-Dialog.tsx";
 import {Column} from "primereact/column";
 import {InputText} from "primereact/inputtext";
 import {Paginator, PaginatorPageChangeEvent} from "primereact/paginator";
 import {DataTable} from "primereact/datatable";
 import {Button} from "primereact/button";
+import {Dropdown, DropdownChangeEvent} from "primereact/dropdown";
 
-interface IStudent {
+export interface IStudent {
     studentId?: string;
     name: string;
     address: string;
     age: number;
     phone: string;
 }
-
+interface SortStudent{
+    name: string;
+    code: string;
+}
 
 export const Student = () => {
     const [visible, setVisible] = useState<boolean>(false);
@@ -25,7 +29,7 @@ export const Student = () => {
     }
     const [first, setFirst] = useState<number>(0);
     const [rows, setRows] = useState<number>(10);
-    const [studentList,setStudentList]=useState<IStudent[]>([]);
+    const [studentList, setStudentList] = useState<IStudent[]>([]);
     const onPageChange = (event: PaginatorPageChangeEvent) => {
         setFirst(event.first);
         setRows(event.rows);
@@ -34,7 +38,7 @@ export const Student = () => {
 
 
     useEffect(() => {
-
+        console.log(studentList);
         const students: IStudent[] = [
             {
                 name: 'Alice Johnson',
@@ -84,26 +88,24 @@ export const Student = () => {
                 age: 32,
                 phone: '0758901234'
             },
-            {
-                name: 'Isaac Torres',
-                address: '901 Ash Street, Springfield',
-                age: 29,
-                phone: '0759012345'
-            },
-            {
-                name: 'Julia Carter',
-                address: '1010 Pine Crescent, Springfield',
-                age: 31,
-                phone: '0750123456'
-            }
+
         ];
         setStudentList(students);
-
     }, []);
-    const studentHandler=(event: React.FormEvent<HTMLFormElement>)=>{
-        event.preventDefault();
-        console.log(event)
-        setStudentList(studentList)
+    const [sort, setSort] = useState<SortStudent | null>(null);
+    const sortList: SortStudent[] = [
+        {name: 'A-Z', code: 'A-Z'},
+        {name: 'name', code: 'name'},
+        {name: 'age', code: 'age'},
+        {name: 'address', code: 'address'},
+        {name: 'phone', code: 'phone'},
+        {name: 'Z-A', code: 'Z-A'},
+    ];
+    const studentHandler = (event: IStudent) => {
+        setStudentList([...studentList,event]);
+    }
+    const searchStudent=()=>{
+        console.log(sort);
     }
     const getHeader = () => {
         return (
@@ -112,10 +114,18 @@ export const Student = () => {
                     new Student
                 </button>
                 <AddStudentDialog hideVisibility={hideVisibility} visible={visible} studentHandler={studentHandler}/>
-                <section className="w-100 d-flex justify-content-end">
-                    <div className="p-inputgroup w-25">
-                        <Button label="Search"/>
-                        <InputText placeholder="Search"/>
+                <section className="w-100 d-flex justify-content-end min-w-50">
+                    <div className="p-inputgroup w-50">
+                        <Button label="Search" onClick={searchStudent}/>
+                        <InputText placeholder="Search" className={'w-50'}/>
+                            <Dropdown value={sort} className={'w-10'}
+                                      onChange={(e: DropdownChangeEvent) => setSort(e.value)} options={sortList}
+                                      optionLabel="name"
+                                      placeholder="Sort"
+                                      checkmark={true}  highlightOnSelect={false}
+
+                            />
+
                     </div>
                 </section>
             </div>

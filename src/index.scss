@@ -1,6 +1,7 @@
 @import url('primereact/resources/themes/mira/theme.css');
 @import url('./assets/style/util.scss');
 @import url('./assets/style/theme.scss');
+@import url('./assets/style/form.scss');
 
 
 body{
@@ -12,4 +13,7 @@ body{
 a{
     text-decoration: none !important;
     color: black !important;
+}
+.p-dropdown-items{
+    padding:0 !important;
 }

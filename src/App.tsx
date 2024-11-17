@@ -1,4 +1,4 @@
-import { RouterProvider,createBrowserRouter } from 'react-router-dom';
+import { RouterProvider,createBrowserRouter,Navigate  } from 'react-router-dom';
 import './App.scss'
 import React from "react";
 import {PostLogin} from "./pages/post-login/PostLogin.tsx";
@@ -14,7 +14,7 @@ import {Student} from "./pages/post-login/student/Student.tsx";
 
 const App:React.FC=()=> {
         const route=createBrowserRouter([
-            {path:"/",element:<PostLogin/>,children:[
+            {path:"/post",element:<PostLogin/>,children:[
                     {path:"",element:<Dashboard/>},
                     {path:"book",element:<Book/>},
                     {path:"order",element:<Order/>},
@@ -23,6 +23,7 @@ const App:React.FC=()=> {
 
                 ]},
             {path:"/pre",element:<PreLogin/>},
+            {path:"",element:<Navigate to="/post" replace />},
 
         ])
   return (
