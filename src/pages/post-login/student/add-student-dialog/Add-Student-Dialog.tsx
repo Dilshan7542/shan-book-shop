@@ -11,15 +11,18 @@ interface DialogStudent {
     hideVisibility: () => void;
     studentHandler: (event: IStudent) => void;
     visible: boolean;
+    isEdit:boolean;
+    student?:IStudent
 }
 
-const schema = z.object({
-    name: z.string().min(2, {message: "Sorry you should input at least 2 character"}).regex(RegexService.NAME,{message:"invalid input"}),
-       age:z.number().max(99,{message:"Age cannot be more than 2 digits"}),
-       address:z.string(),
-       phone:z.string().regex(RegexService.PHONE,{message:"Invalid Mobile Number"})
-});
 export const AddStudentDialog = (dialog: DialogStudent) => {
+    const schema = z.object({
+        name: z.string().min(2, {message: "Sorry you should input at least 2 character"}).regex(RegexService.NAME,{message:"invalid input"}),
+        age:z.number().max(99,{message:"Age cannot be more than 2 digits"}),
+        address:z.string(),
+        phone:z.string().regex(RegexService.PHONE,{message:"Invalid Mobile Number"})
+    });
+
     const {register, handleSubmit, formState: {errors,isValid},reset} = useForm<IStudent>({resolver: zodResolver(schema),mode:"onBlur"});
     const formData = (data: FieldValues) => {
      dialog.studentHandler(data as IStudent);
