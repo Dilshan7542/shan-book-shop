@@ -5,6 +5,8 @@ import {z} from 'zod';
 import {zodResolver} from "@hookform/resolvers/zod";
 import {RegexService} from "../../../../utils/regex.service.ts";
 import {IStudent} from "../../../../service/student/StudentService.ts";
+import {useEffect} from "react";
+
 
 
 interface DialogStudent {
@@ -22,13 +24,24 @@ export const AddStudentDialog = (dialog: DialogStudent) => {
         address:z.string(),
         phone:z.string().regex(RegexService.PHONE,{message:"Invalid Mobile Number"})
     });
+    useEffect(() => {
+        console.log(dialog.student)
+        reset(dialog.student);
 
-    const {register, handleSubmit, formState: {errors,isValid},reset} = useForm<IStudent>({resolver: zodResolver(schema),mode:"onBlur"});
+    }, [dialog]);
+    const {register, handleSubmit, formState: {errors,isValid},reset} = useForm<IStudent>({resolver: zodResolver(schema),mode:"onBlur",defaultValues: dialog.student || {
+            name: "",
+            address: "",
+            phone: "",
+            age: 0,
+        }});
+
     const formData = (data: FieldValues) => {
-     dialog.studentHandler(data as IStudent);
+        dialog.studentHandler(data as IStudent);
         dialog.hideVisibility();
         reset();
     }
+
 
     return (<>
         <Dialog header="Add new Student" visible={dialog.visible} style={{width: '50vw'}} onHide={() => {
@@ -77,7 +90,7 @@ export const AddStudentDialog = (dialog: DialogStudent) => {
                             </div>}
                     </section>
                     <section className="col-12 d-flex  align-items-center">
-                        <button type="submit" className="btn btn-primary mt-3" disabled={!isValid}>save</button>
+                        <button type="submit" className="btn btn-primary mt-3" disabled={!isValid}>{dialog.isEdit ? 'Update':'Save'}</button>
                     </section>
                 </form>
             </section>

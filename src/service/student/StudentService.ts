@@ -1,6 +1,7 @@
 import apiClient, {AppResponse} from "../ApiClient.ts";
 import {AxiosError} from "axios";
 export interface IStudent {
+    _id?:string;
     studentId?: string;
     name: string;
     address: string;

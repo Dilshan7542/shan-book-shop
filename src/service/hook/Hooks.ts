@@ -18,9 +18,9 @@ export const useTableState=<T>()=>{
 
 export const useDialogState=()=> {
     const [visible, setVisible] = useState<boolean>(false);
-    const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [isEdit, setEdit] = useState<boolean>(false);
     const hideVisibility = () => {
         setVisible(false);
     }
-    return {visible, setVisible, hideVisibility,isEdit,setIsEdit};
+    return {visible, setVisible, hideVisibility,isEdit,setIsEdit: setEdit};
 }

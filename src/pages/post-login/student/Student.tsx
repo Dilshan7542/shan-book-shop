@@ -12,6 +12,7 @@ import {Dropdown, DropdownChangeEvent} from "primereact/dropdown";
 import {creatStudent, getAllStudent, IStudent, updateStudent} from "../../../service/student/StudentService.ts";
 import {ResponseCode} from "../../../service/ResponseCode.ts";
 import {useDataState, useDialogState, useTableState} from "../../../service/hook/Hooks.ts";
+import {Crud} from "../../../service/constant/app-constant.ts";
 
 interface SortStudent {
     name: string;
@@ -41,11 +42,13 @@ export const Student = () => {
     }, []);
 
     const studentHandler = (event: IStudent) => {
+
             if(isEdit){
                 updateStudentHandler(event);
             }else {
                 createStudentHandler(event)
             }
+            setIsEdit(false);
     }
     const updateStudentHandler=(student:IStudent)=>{
         updateStudent(student).then(resp=>{
@@ -75,19 +78,21 @@ export const Student = () => {
             }
         });
     }
-    const tableActionDataHandler=(student:IStudent,action:'EDIT'|'DELETE')=>{
+    const actionDataHandler=(student:IStudent | undefined,action:Crud)=>{
+                setData(student);
         switch (action) {
-            case "EDIT":
+            case Crud.UPDATE:
                 setVisible(true);
                 setIsEdit(true);
-                setData(student);
                 break;
-            case "DELETE":
-
+            case Crud.DELETE:
+                break;
+            case Crud.CREATE:
+                setVisible(true);
+                break;
+            case Crud.READ:
                 break;
         }
-        console.log(student)
-        setData(student);
     }
 
     const searchStudent = () => {
@@ -97,7 +102,7 @@ export const Student = () => {
     const getHeader = () => {
         return (
             <div className="flex justify-content-center w-100">
-                <button className="btn btn-success btn-sm" onClick={() => setVisible(true)}><PlusCircle size={32}/> Add
+                <button className="btn btn-success btn-sm" onClick={() => actionDataHandler(undefined,Crud.CREATE)}><PlusCircle size={32}/> Add
                     new Student
                 </button>
                 <AddStudentDialog hideVisibility={hideVisibility} visible={visible} studentHandler={studentHandler}
@@ -137,10 +142,10 @@ export const Student = () => {
                         <Column field="phone" header="Phone"></Column>
                         <Column field="action" header="Action" body={(data)=>(
                             <div>
-                                <button className={'btn'}   onClick={() =>tableActionDataHandler(data,"DELETE")}>
+                                <button className={'btn'}   onClick={() =>actionDataHandler(data,Crud.DELETE)}>
                                     <i className="ph ph-trash text-danger"></i></button>
                                 <button className={'btn'}
-                                        onClick={() =>tableActionDataHandler(data,"EDIT")}>
+                                        onClick={() =>actionDataHandler(data,Crud.UPDATE)}>
                                     <i className="ph ph-pencil"></i></button>
                             </div>)
                         }></Column>
