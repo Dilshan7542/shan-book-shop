@@ -19,7 +19,7 @@ export const getAllStudent=async ()=>{
 }
 export const creatStudent=async (student:IStudent)=>{
     try {
-   const response = await apiClient.post<AppResponse<IStudent>>(URL,student);
+   const response = await apiClient.post<AppResponse<IStudent[]>>(URL,student);
         console.log(response)
    return response.data;
     }catch (error){
@@ -29,7 +29,17 @@ export const creatStudent=async (student:IStudent)=>{
 }
 export const updateStudent=async (student:IStudent)=>{
     try {
-        const response = await apiClient.put<AppResponse<IStudent>>(URL,student);
+        const response = await apiClient.put<AppResponse<IStudent[]>>(URL,student);
+        console.log(response)
+        return response.data;
+    }catch (error){
+        throw (error as AxiosError).message;
+    }
+
+}
+export const deleteStudent=async (student:IStudent)=>{
+    try {
+        const response = await apiClient.delete<AppResponse<IStudent[]>>(URL+"/"+student._id);
         console.log(response)
         return response.data;
     }catch (error){

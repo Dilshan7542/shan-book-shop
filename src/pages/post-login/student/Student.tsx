@@ -9,7 +9,13 @@ import {Paginator, PaginatorPageChangeEvent} from "primereact/paginator";
 import {DataTable} from "primereact/datatable";
 import {Button} from "primereact/button";
 import {Dropdown, DropdownChangeEvent} from "primereact/dropdown";
-import {creatStudent, getAllStudent, IStudent, updateStudent} from "../../../service/student/StudentService.ts";
+import {
+    creatStudent,
+    deleteStudent,
+    getAllStudent,
+    IStudent,
+    updateStudent
+} from "../../../service/student/StudentService.ts";
 import {ResponseCode} from "../../../service/ResponseCode.ts";
 import {useDataState, useDialogState, useTableState} from "../../../service/hook/Hooks.ts";
 import {Crud} from "../../../service/constant/app-constant.ts";
@@ -46,7 +52,7 @@ export const Student = () => {
             if(isEdit){
                 updateStudentHandler(event);
             }else {
-                createStudentHandler(event)
+                createStudentHandler(event);
             }
             setIsEdit(false);
     }
@@ -54,7 +60,7 @@ export const Student = () => {
         updateStudent(student).then(resp=>{
             console.log(resp)
             if (resp.status == ResponseCode.SUCCESS) {
-                loadAllStudent();
+                setDataList(resp.content);
             }
 
         }).catch(error=>{
@@ -64,16 +70,25 @@ export const Student = () => {
     const createStudentHandler=(student:IStudent)=>{
         creatStudent(student).then(resp => {
             if (resp.status == ResponseCode.SUCCESS) {
-                loadAllStudent();
+                setDataList(resp.content);
             }
         }).catch(error => {
             console.log(error);
         });
     }
-
+    const deleteStudentHandler=(student:IStudent)=>{
+        deleteStudent(student).then(resp => {
+            if (resp.status == ResponseCode.SUCCESS) {
+                setDataList(resp.content);
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    }
     const loadAllStudent = () => {
         getAllStudent().then(resp => {
             if (resp.status === ResponseCode.SUCCESS) {
+                console.log(resp.content)
                 setDataList(resp.content);
             }
         });
@@ -86,6 +101,8 @@ export const Student = () => {
                 setIsEdit(true);
                 break;
             case Crud.DELETE:
+                if(student)
+                deleteStudentHandler(student);
                 break;
             case Crud.CREATE:
                 setVisible(true);
@@ -97,7 +114,6 @@ export const Student = () => {
 
     const searchStudent = () => {
         console.log(sort);
-
     }
     const getHeader = () => {
         return (

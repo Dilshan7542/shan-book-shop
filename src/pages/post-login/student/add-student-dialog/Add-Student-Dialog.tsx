@@ -17,27 +17,29 @@ interface DialogStudent {
     student?:IStudent
 }
 
-export const AddStudentDialog = (dialog: DialogStudent) => {
     const schema = z.object({
         name: z.string().min(2, {message: "Sorry you should input at least 2 character"}).regex(RegexService.NAME,{message:"invalid input"}),
         age:z.number().max(99,{message:"Age cannot be more than 2 digits"}),
         address:z.string(),
         phone:z.string().regex(RegexService.PHONE,{message:"Invalid Mobile Number"})
     });
+export const AddStudentDialog = (dialog: DialogStudent) => {
+    const {register, handleSubmit, formState: {errors,isValid},reset} = useForm<IStudent>({resolver: zodResolver(schema),mode:"onBlur"});
     useEffect(() => {
-        console.log(dialog.student)
+        if (dialog.student) {
         reset(dialog.student);
+        }else{
+            reset({name:undefined,age:undefined,address:undefined,phone:undefined});
+        }
 
-    }, [dialog]);
-    const {register, handleSubmit, formState: {errors,isValid},reset} = useForm<IStudent>({resolver: zodResolver(schema),mode:"onBlur",defaultValues: dialog.student || {
-            name: "",
-            address: "",
-            phone: "",
-            age: 0,
-        }});
+    }, [ reset,dialog]);
 
     const formData = (data: FieldValues) => {
+        if (dialog.isEdit) {
+        dialog.studentHandler({...data as IStudent,_id:dialog.student?._id});
+        }else{
         dialog.studentHandler(data as IStudent);
+        }
         dialog.hideVisibility();
         reset();
     }
@@ -54,6 +56,11 @@ export const AddStudentDialog = (dialog: DialogStudent) => {
                         <label htmlFor="name-id">Name</label>
                         <input type="text" className="form-control"
                                id="name-id"  {...register("name")}
+                               onChange={(e) => {
+                                   const value = e.target.value;
+                                   e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                                   return e;
+                               }}
                                aria-describedby="emailHelp" placeholder="Firt Name"/>
                         {errors.name?.message &&
                             < div className="invalid-input">
@@ -65,7 +72,7 @@ export const AddStudentDialog = (dialog: DialogStudent) => {
                         <input type="text" className="form-control"
                                id="address-id"
                                {...register("address")}
-                               aria-describedby="emailHelp" placeholder="Firt Name"/>
+                               aria-describedby="emailHelp" placeholder="Address"/>
                         {errors.address?.message &&
                             < div className="invalid-input">
                                 {errors.address.message}
