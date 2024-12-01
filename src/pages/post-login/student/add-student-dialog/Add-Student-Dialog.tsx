@@ -1,6 +1,6 @@
 import {Dialog} from "primereact/dialog";
 import {FieldValues, useForm} from "react-hook-form";
-
+import _ from 'lodash';
 import {z} from 'zod';
 import {zodResolver} from "@hookform/resolvers/zod";
 import {RegexService} from "../../../../utils/regex.service.ts";
@@ -36,7 +36,13 @@ export const AddStudentDialog = (dialog: DialogStudent) => {
 
     const formData = (data: FieldValues) => {
         if (dialog.isEdit) {
-        dialog.studentHandler({...data as IStudent,_id:dialog.student?._id});
+        const studentObj ={
+            ...dialog.student,
+        ...data as IStudent
+        }
+            if (!_.isEqual(dialog.student, studentObj)) {
+        dialog.studentHandler(studentObj);
+            }
         }else{
         dialog.studentHandler(data as IStudent);
         }
@@ -46,7 +52,7 @@ export const AddStudentDialog = (dialog: DialogStudent) => {
 
 
     return (<>
-        <Dialog header="Add new Student" visible={dialog.visible} style={{width: '50vw'}} onHide={() => {
+        <Dialog header={dialog.isEdit ? 'Update '+dialog.student?.name: 'Add new Student'} visible={dialog.visible} style={{width: '50vw'}} onHide={() => {
             if (!dialog.visible) return;
             dialog.hideVisibility();
         }}>

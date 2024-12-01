@@ -19,6 +19,9 @@ import {
 import {ResponseCode} from "../../../service/ResponseCode.ts";
 import {useDataState, useDialogState, useTableState} from "../../../service/hook/Hooks.ts";
 import {Crud} from "../../../service/constant/app-constant.ts";
+import {useParams} from "react-router-dom";
+import {pageCheck} from "../../../utils/AppUtil.ts";
+import {Pagination} from "../../../service/ApiClient.ts";
 
 interface SortStudent {
     name: string;
@@ -35,9 +38,11 @@ const sortList: SortStudent[] = [
     {name: 'Z-A', code: 'Z-A'},
 ];
 export const Student = () => {
+    let totalRecode=0;
     const {first, rows, setFirst, setRows, setSort, sort} = useTableState<SortStudent>();
     const {data,setData,dataList,setDataList} = useDataState<IStudent>();
    const {hideVisibility, setVisible, visible,isEdit,setIsEdit} = useDialogState();
+   const {rowCount,pageNo} = useParams();
     const onPageChange = (event: PaginatorPageChangeEvent) => {
         setFirst(event.first);
         setRows(event.rows);
@@ -60,7 +65,7 @@ export const Student = () => {
         updateStudent(student).then(resp=>{
             console.log(resp)
             if (resp.status == ResponseCode.SUCCESS) {
-                setDataList(resp.content);
+                setDataList(resp.content.studentList);
             }
 
         }).catch(error=>{
@@ -70,7 +75,7 @@ export const Student = () => {
     const createStudentHandler=(student:IStudent)=>{
         creatStudent(student).then(resp => {
             if (resp.status == ResponseCode.SUCCESS) {
-                setDataList(resp.content);
+                setDataList(resp.content.studentList);
             }
         }).catch(error => {
             console.log(error);
@@ -79,19 +84,28 @@ export const Student = () => {
     const deleteStudentHandler=(student:IStudent)=>{
         deleteStudent(student).then(resp => {
             if (resp.status == ResponseCode.SUCCESS) {
-                setDataList(resp.content);
+                setDataList(resp.content.studentList);
             }
         }).catch(error => {
             console.log(error);
         });
     }
     const loadAllStudent = () => {
-        getAllStudent().then(resp => {
+        getAllStudent(pageCheck({pageNo:pageNo,rowCount:rowCount})).then(resp => {
             if (resp.status === ResponseCode.SUCCESS) {
-                console.log(resp.content)
-                setDataList(resp.content);
+                setDataList(resp.content.studentList);
+                configPagination({
+                    configCount:resp.content.configCount,
+                    totalPage:resp.content.totalPage,
+                    totalRecode:resp.content.totalRecode
+                });
             }
         });
+    }
+    function configPagination(pagination:Pagination){
+        console.log(pagination)
+        totalRecode=pagination.totalRecode;
+
     }
     const actionDataHandler=(student:IStudent | undefined,action:Crud)=>{
                 setData(student);
@@ -141,7 +155,7 @@ export const Student = () => {
     };
     const getFooter = () => {
         return (<div>
-            <Paginator first={first} rows={rows} totalRecords={120} rowsPerPageOptions={[5, 10, 20, 30]}
+            <Paginator first={first} rows={rows} totalRecords={totalRecode} rowsPerPageOptions={[5, 10, 20, 30]}
                        onPageChange={onPageChange}/></div>)
     }
     const header = getHeader();

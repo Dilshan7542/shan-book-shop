@@ -16,10 +16,10 @@ const App:React.FC=()=> {
         const route=createBrowserRouter([
             {path:"/post",element:<PostLogin/>,children:[
                     {path:"",element:<Dashboard/>},
-                    {path:"book",element:<Book/>},
+                    {path:"book/:page",element:<Book/>},
                     {path:"order",element:<Order/>},
-                    {path:"user",element:<User/>},
-                    {path:"student",element:<Student/>},
+                    {path:"user/:page",element:<User/>},
+                    {path:"student/:rowCount/:pageNo",element:<Student/>},
 
                 ]},
             {path:"/pre",element:<PreLogin/>},

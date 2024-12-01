@@ -11,7 +11,7 @@ export const useDataState=<T>()=>{
 }
 export const useTableState=<T>()=>{
     const [sort, setSort] = useState<T | null>(null);
-    const [first, setFirst] = useState<number>(0);
+    const [first, setFirst] = useState<number>(5);
     const [rows, setRows] = useState<number>(10);
     return {sort,setSort,first,setFirst,rows,setRows};
 }
